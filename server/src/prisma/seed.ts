@@ -1,5 +1,15 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import dotenv from 'dotenv'
+import path from 'path'
+
+// Carrega .env do servidor ou da raiz
+dotenv.config({ path: path.resolve(__dirname, '../../.env') })
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') })
+
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = 'postgresql://postgres:postgres123@localhost:5432/fabrica?schema=public'
+}
 
 const prisma = new PrismaClient()
 
