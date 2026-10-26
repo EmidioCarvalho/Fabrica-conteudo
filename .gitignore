@@ -1,0 +1,47 @@
+# Dependências
+node_modules/
+.pnp
+.pnp.js
+
+# Builds e Distribuição
+dist/
+dist-ssr/
+build/
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Variáveis de Ambiente e Segredos
+.env
+.env.production
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Uploads e arquivos temporários (preserva pasta via .gitkeep)
+public/uploads/*
+!public/uploads/.gitkeep
+server/uploads/*
+!server/uploads/.gitkeep
+n8n/*.bak
+
+# IDEs e Editores
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Prisma e SQLite temporários se houver
+*.db
+*.db-journal

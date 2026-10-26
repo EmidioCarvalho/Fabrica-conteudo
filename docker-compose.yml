@@ -1,0 +1,82 @@
+services:
+  # ── BANCO DE DADOS POSTGRESQL ──────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: fabrica_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres123}
+      POSTGRES_DB: ${POSTGRES_DB:-fabrica}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-fabrica}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fabrica_network
+
+  # ── APLICAÇÃO FULL-STACK (NODE.JS API + FRONT-END SPA) ─────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fabrica_api
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '4000:4000'
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres123}@postgres:5432/${POSTGRES_DB:-fabrica}?schema=public
+      N8N_WEBHOOK_URL: http://n8n:5678/webhook/fabrica-publish
+      PLATFORM_CALLBACK_URL: http://api:4000/api/webhooks/n8n/callback
+    volumes:
+      - uploads_data:/app/server/uploads
+    networks:
+      - fabrica_network
+
+  # ── ORQUESTRADOR N8N COM WORKFLOW FÁBRICA ──────────────────────────────────
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: fabrica_n8n
+    restart: always
+    ports:
+      - '5678:5678'
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+      # Variáveis consumidas pelo workflow fabrica.workflow.json
+      - N8N_SHARED_SECRET=${N8N_SHARED_SECRET:-fabrica_n8n_secret_token_secure_123}
+      - PLATFORM_CALLBACK_URL=http://api:4000/api/webhooks/n8n/callback
+      - IMGBB_API_KEY=${IMGBB_API_KEY:-}
+      - APPROVAL_EMAIL=${APPROVAL_EMAIL:-aprovacao@fabrica.com}
+      - EVOLUTION_INSTANCE=${EVOLUTION_INSTANCE:-fabrica_notify}
+      - EVOLUTION_NOTIFY_JID=${EVOLUTION_NOTIFY_JID:-}
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n/fabrica.workflow.json:/data/fabrica.workflow.json:ro
+    networks:
+      - fabrica_network
+
+networks:
+  fabrica_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  uploads_data:
+  n8n_data:

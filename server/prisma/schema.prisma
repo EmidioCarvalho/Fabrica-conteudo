@@ -1,0 +1,137 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  SOLICITANTE
+  EDITOR
+  DEVOPS
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  BLOCKED
+}
+
+model User {
+  id                String       @id @default(uuid())
+  name              String
+  email             String       @unique
+  passwordHash      String
+  role              Role         @default(SOLICITANTE)
+  status            UserStatus   @default(PENDING)
+  emailVerified     Boolean      @default(false)
+  verificationToken String?
+  tokenExpiresAt    DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  demandsRequested  PublicationDemand[] @relation("DemandsRequested")
+  demandsAssigned   PublicationDemand[] @relation("DemandsAssigned")
+  postsEdited       Post[]              @relation("PostsEdited")
+  mediasUploaded    Media[]             @relation("MediasUploaded")
+
+  @@map("users")
+}
+
+model PublicationDemand {
+  id               String       @id @default(uuid())
+  title            String
+  briefing         String
+  targetNetwork    String
+  desiredDate      String?
+  routeTarget      String       @default("EQUIPE_MARKETING") // 'EQUIPE_MARKETING' | 'IA_N8N'
+  status           String       @default("PENDENTE_EDITOR")  // 'PENDENTE_EDITOR' | 'EM_PRODUCAO' | 'EM_REVISAO' | 'AJUSTES_SOLICITADOS' | 'ENVIADO_IA' | 'CONCLUIDO' | 'CANCELADO'
+  requestedById    String
+  assignedEditorId String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  requestedBy      User         @relation("DemandsRequested", fields: [requestedById], references: [id], onDelete: Cascade)
+  assignedEditor   User?        @relation("DemandsAssigned", fields: [assignedEditorId], references: [id], onDelete: SetNull)
+  posts            Post[]
+  n8nLogs          N8nLog[]
+
+  @@map("publication_demands")
+}
+
+model Post {
+  id                String          @id @default(uuid())
+  demandId          String
+  title             String
+  caption           String
+  imageUrl          String?
+  cta               String?
+  socialNetwork     String
+  scheduledDate     String?
+  scheduledTime     String?
+  editorId          String?
+  status            String          @default("Rascunho") // 'Rascunho' | 'Em revisão' | 'Ajustes solicitados' | 'Aprovado' | 'Agendado' | 'Publicado' | 'Erro'
+  rejectionFeedback String?
+  theme             String?
+  hashtags          String?
+  campaign          String?
+  metrics           Json?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  demand            PublicationDemand @relation(fields: [demandId], references: [id], onDelete: Cascade)
+  editor            User?             @relation("PostsEdited", fields: [editorId], references: [id], onDelete: SetNull)
+  history           StatusHistory[]
+  medias            Media[]
+  n8nLogs           N8nLog[]
+
+  @@map("posts")
+}
+
+model StatusHistory {
+  id         String   @id @default(uuid())
+  postId     String
+  statusFrom String?
+  statusTo   String
+  changedBy  String
+  notes      String?
+  timestamp  DateTime @default(now())
+
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("status_histories")
+}
+
+model Media {
+  id           String   @id @default(uuid())
+  filename     String
+  url          String
+  mimeType     String
+  sizeBytes    Int
+  postId       String?
+  uploadedById String?
+  createdAt    DateTime @default(now())
+
+  post         Post?    @relation(fields: [postId], references: [id], onDelete: SetNull)
+  uploadedBy   User?    @relation("MediasUploaded", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@map("media")
+}
+
+model N8nLog {
+  id        String   @id @default(uuid())
+  demandId  String?
+  postId    String?
+  event     String
+  payload   Json
+  response  Json?
+  status    String   // 'Success' | 'Failed' | 'Pending'
+  timestamp DateTime @default(now())
+
+  demand    PublicationDemand? @relation(fields: [demandId], references: [id], onDelete: SetNull)
+  post      Post?              @relation(fields: [postId], references: [id], onDelete: SetNull)
+
+  @@map("n8n_logs")
+}
