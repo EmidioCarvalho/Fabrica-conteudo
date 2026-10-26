@@ -1,5 +1,5 @@
 {
-  "name": "Fábrica automatizada de publicação de conteúdo para mídias sociais + composição de prompts do sistema (integrado à plataforma)",
+  "name": "Fábrica de Conteúdo com Google Gemini Flash (Integrada)",
   "nodes": [
     {
       "parameters": {
@@ -642,87 +642,6 @@
     },
     {
       "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4o-mini",
-          "cachedResultName": "gpt-4o-mini"
-        },
-        "options": {
-          "responseFormat": "text"
-        }
-      },
-      "id": "0dcf0dee-ea9e-4eba-8f4e-d737e9fd0907",
-      "name": "gpt-40-mini",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "position": [
-        352,
-        1680
-      ],
-      "typeVersion": 1.2,
-      "credentials": {
-        "openAiApi": {
-          "id": "7MAHK5wwVhQXAyaO",
-          "name": "OpenAi Bicimoto"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4o-mini",
-          "cachedResultName": "gpt-4o-mini"
-        },
-        "options": {
-          "responseFormat": "text"
-        }
-      },
-      "id": "60cd6f51-7589-4538-987c-ae6293d90f43",
-      "name": "gpt-40-mini1",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "position": [
-        -1120,
-        864
-      ],
-      "typeVersion": 1.2,
-      "credentials": {
-        "openAiApi": {
-          "id": "T9MyYKCN7xvyV8Ln",
-          "name": "OpenAi SevenApps"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4.1-mini",
-          "mode": "list",
-          "cachedResultName": "gpt-4.1-mini"
-        },
-        "options": {
-          "responseFormat": "json_object"
-        }
-      },
-      "id": "07e42a79-d495-4aa1-a507-2cf193f255ab",
-      "name": "gpt-4o-mini",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "position": [
-        -1200,
-        1920
-      ],
-      "typeVersion": 1.2,
-      "credentials": {
-        "openAiApi": {
-          "id": "7MAHK5wwVhQXAyaO",
-          "name": "OpenAi Bicimoto"
-        }
-      }
-    },
-    {
-      "parameters": {
         "content": "<system>\nVocê é uma IA especializada em criação de conteúdo para plataformas de mídia social.\nSua principal função é gerar conteúdo otimizado para diversas plataformas de mídia social, incluindo LinkedIn, Instagram, Facebook, Twitter (X), Threads e YouTube Shorts. Cada conteúdo deve:\nCorresponder às expectativas do público-alvo e às preferências do algoritmo da plataforma específica\nDemonstrar conhecimento especializado relevante em sua área\nFornecer insights acionáveis ​​para seu público-alvo\nImpulsionar o engajamento significativo por meio de conteúdo orientado a valor\nOBJETIVOS:\nCriar conteúdo específico para cada plataforma, seguindo as melhores práticas de cada uma\nImplementar o uso estratégico de hashtags, combinando tags gerais e populares\nCriar conteúdo que incentive a interação do usuário e a construção de comunidade\nManter uma voz de marca consistente, adaptando-se aos requisitos da plataforma\nIncorporar insights baseados em dados para maximizar o desempenho do conteúdo\nREQUISITOS DE ENTREGA:\nEntregar o conteúdo em formato JSON válido, de acordo com o esquema específico da plataforma\nIncluir todos os campos obrigatórios, conforme especificado no esquema\nOmitir qualquer texto explicativo ou código delimitador em sua resposta\nAdaptar o conteúdo especificamente para a plataforma indicada na solicitação do usuário\nPara cada solicitação de conteúdo, adapte sua entrega com base nas diretrizes da plataforma. Nunca forneça URLs para sugestões de vídeo ou imagem; descreva apenas a sugestão.\n</system>\n\n\n<rules>\nForneça apenas a resposta final em JSON válido para a plataforma de mídia social apropriada.\nNunca inclua nenhum preâmbulo ou explicação adicional.\nSempre remova qualquer ``` ```json\n</rules>\n\n\n<linkedin>\n**Estilo**: Profissional e perspicaz.\n**Tom**: Orientado para negócios; foco em casos de uso de automação, insights do setor e impacto na comunidade.\n**Extensão do conteúdo**: 3 a 4 frases; conciso, porém detalhado.\n**Hashtags**: #Inovação #Automação #SoluçõesDeFluxoDeTrabalho #TransformaçãoDigital #Liderança\n**Chamada para ação (CTA)**: Incentive comentários ou visitas ao site workflows.diy para mais informações.\n</linkedin>\n\n<instagram>\n**Estilo**: Narrativa visual com legendas criativas.\n**Tom**: Inspirador e envolvente; use emojis para criar identificação.\n**Extensão do conteúdo**: 2 a 3 frases combinadas com recursos visuais atraentes (por exemplo, infográficos ou demonstrações de fluxos de trabalho).\n**Recursos visuais**: Destaque marcos importantes (por exemplo, lançamentos de novos fluxos de trabalho), tutoriais ou destaques do produto.\n**Chamada para ação**: Use frases como \"Deslize para saber mais\", \"Marque sua equipe\" ou \"Confira o link abaixo!\".\n**Posicionamento do link**: Adicione o link fornecido antes das hashtags; se nenhum link for fornecido, use \"Visite nosso site: https://example.com\".\n**Hashtags**: #AutomaçãoVida #InovaçãoTecnológica #DicasDeFluxoDeTrabalho #Programação #Engenharia\n</instagram>\n\n<facebook>\n**Estilo**: Amigável e focado na comunidade.\n**Tom**: Empático; destaque histórias de sucesso de usuários ou conquistas da empresa em automação.\n**Extensão do conteúdo**: 2 a 3 frases; conversacional, porém profissional.\n**Hashtags**: #AutomaçãoParaPequenasEmpresas #Empreendedorismo #Liderança #InovaçãoEmFluxosDeTrabalho\n**CTA**: Incentive curtidas, compartilhamentos e comentários (ex.: \"Qual a sua dica de automação favorita?\").\n</facebook>\n\n<xtwitter>\n**Estilo**: Conciso e impactante.\n**Tom**: Claro e envolvente; desperte a curiosidade em 150 caracteres ou menos.\n**Hashtags**: #TendênciasEmFluxosDeTrabalho #FluxosDeTrabalhoComIA #DicasDeAutomação #SoluçõesSemCódigo\n**CTA**: Promova o engajamento rápido por meio de retweets ou respostas (ex.: \"Qual o seu fluxo de trabalho n8n preferido?\").\n</xtwitter>\n\n<threads>\n**Estilo**: Postagens conversacionais e voltadas para a comunidade.\n**Tom**: Casual, porém informativo; incentiva discussões sobre tendências ou inovações em automação.\n**Extensão do conteúdo**: 1 a 2 parágrafos curtos com uma pergunta ou afirmação instigante no final.\n**Hashtags**: Semelhante ao Instagram, mas adaptadas para tópicos em alta no Threads relacionados à automação.\n</threads>\n\n<youtube_short>\n**Estilo**: Conteúdo em vídeo de formato curto apresentando tutoriais rápidos de fluxo de trabalho ou casos de uso.\n**Tom**: Autorizado, porém acessível; estabelece o workflows.diy como líder em soluções de automação n8n.\n**Duração do conteúdo**:\nTutoriais/Análises (longos): 5 a 10 minutos\nVídeos curtos/Destaques (curtos): Menos de 1 minuto\n**Chamada para ação**: Incentive inscrições, curtidas e comentários (ex.: \"Inscreva-se para mais dicas de fluxo de trabalho!\").\n</youtube_short>\n\n\n\n\n",
         "height": 1716,
         "width": 760,
@@ -1235,7 +1154,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Use the HTML template and populate [fields] as required from this: {{ $('pollinations.ai1').item.json.output.toJsonString() }}\n-----\nOnly output HTML without code block tags, preamble or further explanation in the format provided.\n\n## HTML Template\n<table style=\"max-width:640px;min-width:320px;width:100%;border-collapse:collapse;font-family:Arial,sans-serif;margin:20px auto\">\n    <tbody>\n        <tr>\n            <td colspan=\"2\" style=\"background-color:#ffffff;padding:15px;text-align:left\">\n                <img src=\"{{ $json.thumbnailLink }}\" alt=\"{{ $json.output.root_schema.name }}\" style=\"max-width:100%;height:auto;\">\n            </td>\n        </tr>\n        <tr>\n            <td colspan=\"2\" style=\"background-color:#efefef;padding:15px;font-size:20px;text-align:left;font-weight:bold\">\n                {{ $json.output.root_schema.name  }}\n            </td>\n        </tr>\n        <tr>\n            <td style=\"background-color:#f9f9f9;padding:15px;width:30%;text-align:left\"><strong>Platform:</strong></td>\n            <td style=\"background-color:#f9f9f9;padding:15px;text-align:left\">{{ $('Compõe o prompt e o esquema.').item.json.route }}</td>\n        </tr>\n        <tr>\n            <td style=\"background-color:#f9f9f9;padding:15px;width:30%;text-align:left\"><strong>[label_1]:</strong></td>\n            <td style=\"background-color:#f9f9f9;padding:15px;text-align:left\">[content_1]</td>\n        </tr>\n        <tr>\n            <td style=\"background-color:#f1f1f1;padding:15px;text-align:left\"><strong>[label_2]:</strong></td>\n            <td style=\"background-color:#f1f1f1;padding:15px;text-align:left\">[content_2]</td>\n        </tr>\n\n        [continue the pattern ...]\n\n        <tr>\n            <td colspan=\"2\" style=\"background-color:#efefef;padding:15px;text-align:left\">\n                <strong>[footer_label]:</strong> [footer_content]\n            </td>\n        </tr>\n    </tbody>\n</table>\n\n",
+        "text": "=Use the HTML template and populate [fields] as required from this: {{ $('Conteúdo Social').item.json.output ? JSON.stringify($('Conteúdo Social').item.json.output) : '' }}\n-----\nOnly output HTML without code block tags, preamble or further explanation in the format provided.\n\n## HTML Template\n<table style=\"max-width:640px;min-width:320px;width:100%;border-collapse:collapse;font-family:Arial,sans-serif;margin:20px auto\">\n    <tbody>\n        <tr>\n            <td colspan=\"2\" style=\"background-color:#ffffff;padding:15px;text-align:left\">\n                <img src=\"{{ $json.thumbnailLink }}\" alt=\"{{ $json.output.root_schema.name }}\" style=\"max-width:100%;height:auto;\">\n            </td>\n        </tr>\n        <tr>\n            <td colspan=\"2\" style=\"background-color:#efefef;padding:15px;font-size:20px;text-align:left;font-weight:bold\">\n                {{ $json.output.root_schema.name  }}\n            </td>\n        </tr>\n        <tr>\n            <td style=\"background-color:#f9f9f9;padding:15px;width:30%;text-align:left\"><strong>Platform:</strong></td>\n            <td style=\"background-color:#f9f9f9;padding:15px;text-align:left\">{{ $('Compõe o prompt e o esquema.').item.json.route }}</td>\n        </tr>\n        <tr>\n            <td style=\"background-color:#f9f9f9;padding:15px;width:30%;text-align:left\"><strong>[label_1]:</strong></td>\n            <td style=\"background-color:#f9f9f9;padding:15px;text-align:left\">[content_1]</td>\n        </tr>\n        <tr>\n            <td style=\"background-color:#f1f1f1;padding:15px;text-align:left\"><strong>[label_2]:</strong></td>\n            <td style=\"background-color:#f1f1f1;padding:15px;text-align:left\">[content_2]</td>\n        </tr>\n\n        [continue the pattern ...]\n\n        <tr>\n            <td colspan=\"2\" style=\"background-color:#efefef;padding:15px;text-align:left\">\n                <strong>[footer_label]:</strong> [footer_content]\n            </td>\n        </tr>\n    </tbody>\n</table>\n\n",
         "options": {}
       },
       "id": "d1e84769-f980-42cf-a94f-9df352142e38",
@@ -1289,33 +1208,6 @@
         1440
       ],
       "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4.1-mini",
-          "mode": "list",
-          "cachedResultName": "gpt-4.1-mini"
-        },
-        "options": {
-          "responseFormat": "json_object"
-        }
-      },
-      "id": "b1846389-e591-4e07-97f6-49bb06ca3c95",
-      "name": "gpt-4.1-mini",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "position": [
-        -2496,
-        672
-      ],
-      "typeVersion": 1.2,
-      "credentials": {
-        "openAiApi": {
-          "id": "7MAHK5wwVhQXAyaO",
-          "name": "OpenAi Bicimoto"
-        }
-      }
     },
     {
       "parameters": {
@@ -2108,7 +2000,7 @@
             },
             {
               "name": "key",
-              "value": "={{ $env.IMGBB_API_KEY }}"
+              "value": "={{ $env.IMGBB_API_KEY || '9224a4253a3fb37cb3aa6808f9e4d508' }}"
             }
           ]
         },
@@ -2736,6 +2628,66 @@
       "maxTries": 3,
       "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "id": "gemini-router-agent-model",
+      "name": "Google Gemini Flash (Router)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2496,
+        672
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "gagKk4RBpEHmjetw",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "id": "gemini-content-creator-model",
+      "name": "Google Gemini Flash (Content Creator)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        864
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "gagKk4RBpEHmjetw",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "id": "gemini-email-contents-model",
+      "name": "Google Gemini Flash (Email Contents)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        352,
+        1680
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "gagKk4RBpEHmjetw",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -2837,39 +2789,6 @@
           {
             "node": "🤖Social Media Router Agent",
             "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "gpt-40-mini": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Prepare Social Media Email Contents",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "gpt-4o-mini": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Social Media Content Creator",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "gpt-40-mini1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Prepare Email Contents",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -3006,17 +2925,6 @@
           {
             "node": "Envia mensagem no Gmail",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "gpt-4.1-mini": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "🤖Social Media Router Agent",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -3498,6 +3406,39 @@
           {
             "node": "Callback: não implementado",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Flash (Router)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🤖Social Media Router Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Flash (Content Creator)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Social Media Content Creator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Flash (Email Contents)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Prepare Social Media Email Contents",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]

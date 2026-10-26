@@ -11,7 +11,7 @@ A **Fábrica de Conteúdo** é uma solução full-stack moderna concebida para a
 * **Gestão de Pautas e Demandas:** Solicitantes cadastram pautas com briefings, prazos e rede de destino, podendo encaminhá-las para a equipe de redatores ou para o pipeline 100% autônomo de Inteligência Artificial.
 * **Esteira de Produção Editorial:** Editores assumem demandas, elaboram copies, anexam mídias e submetem os posts para revisão sem perder a visibilidade dos trabalhos em andamento.
 * **Central de Aprovação Web-First:** Solicitantes aprovam publicações ou solicitam ajustes diretamente no painel web, disparando callbacks em tempo real para o orquestrador.
-* **Motor de IA & Orquestração (n8n):** Workflow automatizado responsável por enriquecer pautas com pesquisa web (SerpAPI), redigir o conteúdo otimizado por rede (OpenAI GPT-4o-mini), gerar arte gráfica (Pollinations.ai / ImgBB) e publicar diretamente nas redes sociais (Meta Instagram/Facebook, LinkedIn e X/Twitter).
+* **Motor de IA & Orquestração (n8n):** Workflow automatizado responsável por enriquecer pautas com pesquisa web (SerpAPI), redigir o conteúdo otimizado por rede com o **Google Gemini 1.5 Flash**, gerar arte gráfica (Pollinations.ai / ImgBB) e publicar diretamente nas redes sociais (Meta Instagram/Facebook, LinkedIn e X/Twitter).
 * **Observabilidade e DevOps:** Painel com auditoria de requisições, logs de webhooks, status do ecossistema e ferramentas de reprocessamento (retry).
 
 ---
@@ -44,14 +44,14 @@ graph TD
     subgraph Orchestration ["Motor de Automação (n8n)"]
         N8N["n8n Workflow (fabrica.workflow.json)"]
         SerpAPI["SerpAPI (Pesquisa Web)"]
-        OpenAI["OpenAI (GPT-4o-mini)"]
+        Gemini["Google Gemini (1.5 Flash)"]
         Pollinations["Pollinations.ai & ImgBB (Mídia Gráfica)"]
         MetaGraph["Meta Graph API (Instagram & Facebook)"]
         LinkedInAPI["LinkedIn API"]
         TwitterAPI["X (Twitter) API"]
 
         N8N --> SerpAPI
-        N8N --> OpenAI
+        N8N --> Gemini
         N8N --> Pollinations
         N8N --> MetaGraph
         N8N --> LinkedInAPI
